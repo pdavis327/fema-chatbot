@@ -10,6 +10,7 @@ services:
         - ./ollama/ollama:/root/.ollama
         - ./entrypoint.sh:/entrypoint.sh
         - ./.env:/root/.env
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
     env_file:
       - .env
     networks:
@@ -30,7 +31,7 @@ services:
     env_file:
      - .env
     volumes:
-      - ./local_rag_chatbot/assets/db/chroma.sqlite3:/data/chroma.sqlite3:Z
+      - ./assets/chroma.sqlite3:/data/chroma.sqlite3:Z
 
   streamlit-app:
     build:
@@ -48,8 +49,6 @@ services:
     depends_on:
       ollama-container:
         condition: service_healthy
-      # chroma-db:
-      #   condition: service_healthy
 
 networks:
   ollama-network:
